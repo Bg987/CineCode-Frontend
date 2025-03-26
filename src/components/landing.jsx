@@ -25,7 +25,7 @@ const CineCodeLanding = () => {
       <AppBar position="static" sx={{ background: "linear-gradient(90deg, #1D2671, #C33764)" }}>
         <Toolbar>
           <Typography variant="h5" sx={{ flexGrow: 1, color: "#ECF0F1", fontWeight: "bold" }}>
-            CineCode
+            CineCode1234
           </Typography>
           <Button sx={{ color: "#ECF0F1", fontWeight: "bold" }} onClick={handleClick}>
             {isLoggedIn ? "Logout" : "Login"}

@@ -55,7 +55,7 @@ const UserHome = () => {
         <Stack spacing={2}>
           <Button
             variant="contained"
-            onClick={() => alert("Feature coming soon!")}
+            onClick={()=> navigate("/AddMovie")}
             sx={{
               background: "linear-gradient(45deg, #ff6b6b, #ff4757)",
               "&:hover": { background: "linear-gradient(45deg, #ff4757, #ff0000)" },

@@ -16,5 +16,10 @@ export const verifyOTP = (data) => API.post("/apiSignup/verify-otp", data);
 
 // Forgot Password
 export const forgotPassword = (username) => API.post("/apiForget/forgetPassword", username);
+export const AddMovieApi = (data) => API.post("/apiMovie/AddMovie", data, {
+    headers: {
+        "Content-Type": "multipart/form-data"  // ✅ Set Content-Type here
+    }
+});
 
 export default API;

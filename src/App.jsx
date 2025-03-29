@@ -8,6 +8,8 @@ import Contact from "./components/ContactPage";
 import UserHome from "./components/userHome";
 import ForgotPassword from "./components/forgotpassword";
 import AdminHome from "./components/adminHome";
+import AddMovie from "./components/AddMovie";
+
 const App = () => {
     return (
         <Router>
@@ -21,6 +23,7 @@ const App = () => {
                 <Route path="/Uhome" element={<UserHome />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />} /> 
                 <Route path="/AHome" element={<AdminHome />} />       
+                <Route path="/AddMovie" element={<AddMovie />} />       
             </Routes>
         </Router>
     );

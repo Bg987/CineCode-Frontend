@@ -29,7 +29,7 @@ const UserHome = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(to right, #141E30, #243B55)", // Gradient background
+        background: "linear-gradient(123deg, #1D2671, #C33764)", // Gradient background
         padding: 2,
       }}
     >

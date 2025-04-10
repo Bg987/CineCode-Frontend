@@ -9,6 +9,10 @@ import UserHome from "./components/userHome";
 import ForgotPassword from "./components/forgotpassword";
 import AdminHome from "./components/adminHome";
 import AddMovie from "./components/AddMovie";
+import SeeMovie from "./components/seeMovie";
+import ReviewAdd from "./components/review";
+import SeeReview from "./components/seeReview";
+import Approve from "./components/ApproveMovies";
 
 const App = () => {
     return (
@@ -23,7 +27,11 @@ const App = () => {
                 <Route path="/Uhome" element={<UserHome />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />} /> 
                 <Route path="/AHome" element={<AdminHome />} />       
-                <Route path="/AddMovie" element={<AddMovie />} />       
+                <Route path="/AddMovie" element={<AddMovie />} />     
+                <Route path="/SeeMovie" element={<SeeMovie />} />  
+                <Route path="/AddReview" element={<ReviewAdd />} />       
+                <Route path="/SeeReview" element={<SeeReview />} />   
+                <Route path="/Approve" element={< Approve/>} />       
             </Routes>
         </Router>
     );

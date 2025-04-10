@@ -13,7 +13,7 @@ import {
     InputLabel,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { AddMovieApi } from "../services/api"; // Make sure your API function supports FormData
+import { AddMovieApi } from "../services/api"; 
 
 const genres = [
     "Action", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary",
@@ -88,7 +88,8 @@ const AddMovie = () => {
             if (res.status === 201) {
                 alert(res.data.message); // Show success message
                 handleReset(); // Reset the form after success
-            } else {
+            }
+            else {
                 alert("Unexpected error occurred. Try again.");
             }
         } catch (error) {
@@ -113,7 +114,6 @@ const AddMovie = () => {
                 py: 4,
             }}
         >
-            {/* Navigation Buttons */}
             <Box
                 sx={{
                     display: "flex",

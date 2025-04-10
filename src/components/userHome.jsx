@@ -75,7 +75,7 @@ const UserHome = () => {
           </Button>
           <Button
             variant="contained"
-            onClick={() => alert("Feature coming soon!")}
+            onClick={() => navigate("/SeeReview")}
             sx={{
               background: "linear-gradient(45deg, #1e90ff, #0077b6)",
               "&:hover": { background: "linear-gradient(45deg, #0077b6, #003566)" },
@@ -85,7 +85,7 @@ const UserHome = () => {
           </Button>
           <Button
             variant="contained"
-            onClick={() => alert("Feature coming soon!")}
+            onClick={() => navigate("/SeeMovie")}
             sx={{
               background: "linear-gradient(45deg, #2ed573, #1e9c6a)",
               "&:hover": { background: "linear-gradient(45deg, #1e9c6a, #147d50)" },

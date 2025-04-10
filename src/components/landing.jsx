@@ -58,6 +58,7 @@ const CineCodeLanding = () => {
         >
           {isLoggedIn ? "Explore Now" : "Join CineCode"}
         </Button>
+          
       </Box>
 
       {/* Features Section */}

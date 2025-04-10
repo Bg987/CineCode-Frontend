@@ -4,7 +4,7 @@ import {
   Box, TextField, Button, Typography, Container, Paper, Radio,
   RadioGroup, FormControlLabel, CircularProgress
 } from "@mui/material";
-import { login } from "../services/api"; // Single API function for both admin and user
+import { login } from "../services/api";
 
 const Login = () => {
   const [data, setData] = useState({ Username: "", password: "" });
@@ -59,6 +59,10 @@ const Login = () => {
           <Link to="/forgotpassword" style={{ textDecoration: "none", color: "#ff6b6b", marginTop: "10px", fontWeight: "bold" }}>
             <Typography variant="body2">Forgot Password?</Typography>
           </Link>
+          <Link to="/Uhome" style={{ textDecoration: "none", color: "#af6b6c", marginTop: "10px", fontWeight: "bold" }}>
+            <Typography variant="body2">Forgot Logout in last session!?</Typography>
+          </Link>
+         
           <Link to="/signup" style={{ textDecoration: "none", color: "#00ffff", marginTop: "10px", fontWeight: "bold" }}>
             <Typography variant="body2">New User? Sign Up</Typography>
           </Link>

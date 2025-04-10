@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://192.168.121.47:4000", // Backend URL , change in seereview.jsx and seeMoview.jsx approvemoview adminhome.jsx
-  withCredentials: true, // Required for cookies (JWT authentication)
+  baseURL: "http://192.168.121.47:4000", // Backend URL , change in seereview.jsx and seeMoview.jsx approvemoview.jsx adminhome.jsx Adminmoviedelete.jsx
+  withCredentials: true, 
 });
 
 // Authentication
@@ -21,10 +21,12 @@ export const AddMovieApi = (data) => API.post("/apiMovie/AddMovie", data, {
     "Content-Type": "multipart/form-data"  // ✅ Set Content-Type here
   }
 });
-export const seeMovies = (name, lang, year) =>
+export const seeMovies = (name, lang, year) =>//filters
   API.get(`/apiSeeM`, {
     params: { name, lang, year },
   });
 export const AddReview = (id,name,review,rating) => API.post("/apiAddR/AddR", { Mid: id, Mname: name, review: review, rating: rating });
 export const SeeR = () => API.get("/apiSeeR/seeR");
+export const MFA = () => API.get("/ApiApprove/MFApprovence");
+export const Approve = (movieId, status) => API.post("ApiApprove/AOrD",{ movieId, status });
 export default API;

@@ -101,7 +101,7 @@ const AdminHome = () => {
                 <Grid item>
                     <Button
                         variant="contained"
-                        onClick={() => alert("Feature coming soon!")}
+                        onClick={() => navigate("/AdminDelete")}
                         sx={{
                             backgroundColor: "#E74C3C",
                             "&:hover": { backgroundColor: "#C0392B" },
@@ -114,7 +114,6 @@ const AdminHome = () => {
                     </Button>
                 </Grid>
             </Grid>
-
             {/* 🔹 Dashboard Cards */}
             <Grid container spacing={2} sx={{ mt: 4, px: 3 }}>
     <Grid item xs={12} sm={6} md={4}>

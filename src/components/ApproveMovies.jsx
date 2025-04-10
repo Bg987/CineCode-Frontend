@@ -14,6 +14,7 @@ import {
     Alert,
     Skeleton,
 } from "@mui/material";
+import { MFA,Approve } from "../services/api"; 
 
 const ApproveMovies = () => {
     const [pendingMovies, setPendingMovies] = useState([]);
@@ -39,10 +40,7 @@ const ApproveMovies = () => {
     const fetchPendingMovies = async () => {
         setLoading(true);
         try {
-            const res = await axios.get(
-                "http://192.168.121.47:4000/ApiApprove/MFApprovence",
-                { withCredentials: true }
-            );
+            const res = await MFA();
             console.log(res.data)
             setPendingMovies(res.data);
         } catch (err) {
@@ -57,11 +55,8 @@ const ApproveMovies = () => {
     };
     const handleDecision = async (movieId, status) => {
         try {
-            const res = await axios.post(
-                `http://192.168.121.47:4000/ApiApprove/AOrD`,
-                { movieId, status },
-                { withCredentials: true }
-            );
+            const res = await Approve(movieId, status);
+
             setSnackbar({
                 open: true,
                 message: res.data.message || (status === 1 ? "Movie approved" : "Movie rejected"),
@@ -69,6 +64,7 @@ const ApproveMovies = () => {
             });
             setPendingMovies((prev) => prev.filter((movie) => movie.Mid !== movieId));
         } catch (err) {
+            console.error(err);
             setSnackbar({
                 open: true,
                 message: err.response?.data?.message || "Operation failed",

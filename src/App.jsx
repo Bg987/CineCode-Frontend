@@ -13,7 +13,7 @@ import SeeMovie from "./components/seeMovie";
 import ReviewAdd from "./components/review";
 import SeeReview from "./components/seeReview";
 import Approve from "./components/ApproveMovies";
-
+import AdminMovieDelete from "./components/AdminMovieDelete";
 const App = () => {
     return (
         <Router>
@@ -31,7 +31,8 @@ const App = () => {
                 <Route path="/SeeMovie" element={<SeeMovie />} />  
                 <Route path="/AddReview" element={<ReviewAdd />} />       
                 <Route path="/SeeReview" element={<SeeReview />} />   
-                <Route path="/Approve" element={< Approve/>} />       
+                <Route path="/Approve" element={< Approve/>} />   
+                <Route path="/AdminDelete" element={< AdminMovieDelete/>} />       
             </Routes>
         </Router>
     );

@@ -86,7 +86,7 @@ const SeeReview = () => {
         if (text.length <= limit) return text;
         return text.slice(0, limit) + "...";
     };
-
+    
     const renderedCards = useMemo(() => {
         return reviews.map((movie) => {
             const imageUrl = `http://192.168.121.47:4000/apiSeeM/images/${movie.Mid}.jpg`;

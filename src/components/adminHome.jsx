@@ -71,7 +71,7 @@ const AdminHome = () => {
                 <Grid item>
                     <Button
                         variant="contained"
-                        onClick={() => alert("Feature coming soon!")}
+                        onClick={() => navigate("/AddMovie")}
                         sx={{
                             backgroundColor: "#E74C3C",
                             "&:hover": { backgroundColor: "#C0392B" },

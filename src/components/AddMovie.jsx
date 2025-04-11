@@ -79,8 +79,6 @@ const AddMovie = () => {
         formData.append("description", movieData.description);
         formData.append("duration", movieData.duration);
         formData.append("movieImage", movieData.file); // Ensure correct key
-        formData.append("AOrU", localStorage.getItem("Uname"));
-    
         try {
             const res = await AddMovieApi(formData);
             console.log("Server Response:", res);

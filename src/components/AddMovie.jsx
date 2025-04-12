@@ -123,7 +123,7 @@ const AddMovie = () => {
             >
                 <Button
                     variant="outlined"
-                    onClick={() => navigate("/Uhome")}
+                    onClick={() => navigate(-1)}
                     sx={{
                         borderColor: "#ECF0F1",
                         color: "#ECF0F1",

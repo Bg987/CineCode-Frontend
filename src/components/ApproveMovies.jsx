@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import {
     Box,
     Card,
@@ -11,10 +10,8 @@ import {
     Grid,
     Snackbar,
     Alert,
-    Skeleton,
     CircularProgress,
 } from "@mui/material";
-import LoadingButton from '@mui/lab/LoadingButton'; // Import the LoadingButton component
 import { MFA, Approve } from "../services/api";
 
 const ApproveMovies = () => {
@@ -26,7 +23,7 @@ const ApproveMovies = () => {
         message: "",
         severity: "success",
     });
-    const [loadingButton, setLoadingButton] = useState({}); // Track loading states for buttons
+    const [loadingButton, setLoadingButton] = useState({});
     const navigate = useNavigate();
 
     const toggleDescription = (movieId) => {
@@ -57,7 +54,7 @@ const ApproveMovies = () => {
     };
 
     const handleDecision = async (movieId, status) => {
-        setLoadingButton((prev) => ({ ...prev, [movieId]: true })); // Start loading for the movie's buttons
+        setLoadingButton((prev) => ({ ...prev, [movieId]: true }));
         try {
             const res = await Approve(movieId, status);
             setSnackbar({
@@ -67,14 +64,13 @@ const ApproveMovies = () => {
             });
             setPendingMovies((prev) => prev.filter((movie) => movie.Mid !== movieId));
         } catch (err) {
-            console.error(err);
             setSnackbar({
                 open: true,
                 message: err.response?.data?.message || "Operation failed",
                 severity: "error",
             });
         } finally {
-            setLoadingButton((prev) => ({ ...prev, [movieId]: false })); // Stop loading after the operation
+            setLoadingButton((prev) => ({ ...prev, [movieId]: false }));
         }
     };
 
@@ -88,14 +84,7 @@ const ApproveMovies = () => {
                 color: "#fff",
             }}
         >
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: 2,
-                    mb: 3,
-                }}
-            >
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 3 }}>
                 <Button
                     variant="outlined"
                     onClick={() => navigate("/AHome")}
@@ -188,24 +177,32 @@ const ApproveMovies = () => {
                                         </Typography>
 
                                         <Box mt={2} display="flex" gap={1}>
-                                            <LoadingButton
+                                            <Button
                                                 variant="contained"
                                                 color="success"
                                                 onClick={() => handleDecision(movie.Mid, 1)}
-                                                loading={loadingButton[movie.Mid] || false} // Show loading spinner
-                                                loadingPosition="start"
+                                                disabled={loadingButton[movie.Mid] || false}
+                                                startIcon={
+                                                    loadingButton[movie.Mid] ? (
+                                                        <CircularProgress size={18} color="inherit" />
+                                                    ) : null
+                                                }
                                             >
-                                                Approve
-                                            </LoadingButton>
-                                            <LoadingButton
+                                                {loadingButton[movie.Mid] ? "Approving..." : "Approve"}
+                                            </Button>
+                                            <Button
                                                 variant="outlined"
                                                 color="error"
                                                 onClick={() => handleDecision(movie.Mid, -1)}
-                                                loading={loadingButton[movie.Mid] || false} // Show loading spinner
-                                                loadingPosition="start"
+                                                disabled={loadingButton[movie.Mid] || false}
+                                                startIcon={
+                                                    loadingButton[movie.Mid] ? (
+                                                        <CircularProgress size={18} color="inherit" />
+                                                    ) : null
+                                                }
                                             >
-                                                Reject
-                                            </LoadingButton>
+                                                {loadingButton[movie.Mid] ? "Rejecting..." : "Reject"}
+                                            </Button>
                                         </Box>
                                     </CardContent>
                                 </Card>

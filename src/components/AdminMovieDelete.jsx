@@ -34,7 +34,7 @@ const AdminMovieDelete = () => {
   const fetchMovies = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://192.168.121.47:4000/apifAndD/getMovies", { withCredentials: true });
+      const res = await axios.get("https://cinecode-backend.onrender.com/apifAndD/getMovies", { withCredentials: true });
       setMovies(res.data);
     } catch (err) {
       console.error("Error fetching movies", err);
@@ -46,7 +46,7 @@ const AdminMovieDelete = () => {
 
   const handleDelete = async (movieId) => {
     try {
-      const response = await axios.delete("http://192.168.121.47:4000/apifAndD/deleteMovie", {
+      const response = await axios.delete("https://cinecode-backend.onrender.com/apifAndD/deleteMovie", {
         data: { movieId },
         withCredentials: true
       });
@@ -102,7 +102,7 @@ const AdminMovieDelete = () => {
       </Box>
 
       <Typography variant="h4" textAlign="center" fontWeight="bold" mb={4}>
-        Manage Approved Movies
+        Delete Movies
       </Typography>
 
       {/* Filters */}

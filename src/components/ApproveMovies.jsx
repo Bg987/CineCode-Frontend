@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
     Box,
@@ -13,8 +12,9 @@ import {
     Snackbar,
     Alert,
     Skeleton,
+    CircularProgress,
 } from "@mui/material";
-import { MFA,Approve } from "../services/api"; 
+import { MFA, Approve } from "../services/api";
 
 const ApproveMovies = () => {
     const [pendingMovies, setPendingMovies] = useState([]);
@@ -25,7 +25,9 @@ const ApproveMovies = () => {
         message: "",
         severity: "success",
     });
+
     const navigate = useNavigate();
+
     const toggleDescription = (movieId) => {
         setExpandedCards((prev) => ({
             ...prev,
@@ -52,6 +54,7 @@ const ApproveMovies = () => {
             setLoading(false);
         }
     };
+
     const handleDecision = async (movieId, status) => {
         try {
             const res = await Approve(movieId, status);
@@ -88,7 +91,6 @@ const ApproveMovies = () => {
                     justifyContent: "center",
                     gap: 2,
                     mb: 3,
-                    paddingX: "10px",
                 }}
             >
                 <Button
@@ -104,25 +106,25 @@ const ApproveMovies = () => {
                     Back
                 </Button>
             </Box>
-            <Typography variant="h4" textAlign="center" fontWeight="bold" mb={4} >
+
+            <Typography variant="h4" textAlign="center" fontWeight="bold" mb={4}>
                 Pending Movie Approvals
             </Typography>
 
-            <Grid container spacing={3}>
-                {loading
-                    ? Array.from({ length: 6 }).map((_, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={index}>
-                            <Card sx={{ background: "#2C3E50", borderRadius: 3 }}>
-                                <Skeleton variant="rectangular" height={300} animation="wave" />
-                                <CardContent>
-                                    <Skeleton variant="text" height={30} />
-                                    <Skeleton variant="text" width="80%" />
-                                    <Skeleton variant="text" width="60%" />
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))
-                    : pendingMovies.map((movie) => {
+            {loading ? (
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", my: 5 }}>
+                    <CircularProgress color="inherit" />
+                    <Typography ml={2} variant="h6" sx={{ color: "#ECF0F1" }}>
+                        Loading movies...
+                    </Typography>
+                </Box>
+            ) : pendingMovies.length === 0 ? (
+                <Typography variant="h6" textAlign="center" mt={4}>
+                    No pending movies to approve.
+                </Typography>
+            ) : (
+                <Grid container spacing={3}>
+                    {pendingMovies.map((movie) => {
                         const isExpanded = expandedCards[movie.Mid];
                         const description = movie.Discription || "";
                         const shortDesc = description.slice(0, 100);
@@ -149,10 +151,16 @@ const ApproveMovies = () => {
                                     />
                                     <CardContent>
                                         <Typography variant="h6">{movie.Mname}</Typography>
-                                        <Typography variant="body2" mt={1}><strong>Language:</strong> {movie.Language}</Typography>
-                                        <Typography variant="body2"><strong>Year:</strong> {movie.Year}</Typography>
-                                        <Typography variant="body2"><strong>Duration:</strong> {movie.Duration} mins</Typography>
-                                        <Typography variant="body2" sx={{ mt: 1, wordBreak: "break-word", overflowWrap: "break-word" }}>
+                                        <Typography variant="body2" mt={1}>
+                                            <strong>Language:</strong> {movie.Language}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            <strong>Year:</strong> {movie.Year}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            <strong>Duration:</strong> {movie.Duration} mins
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ mt: 1 }}>
                                             <strong>Description:</strong>{" "}
                                             {description.length > 100 ? (
                                                 <>
@@ -197,7 +205,8 @@ const ApproveMovies = () => {
                             </Grid>
                         );
                     })}
-            </Grid>
+                </Grid>
+            )}
 
             <Snackbar
                 open={snackbar.open}

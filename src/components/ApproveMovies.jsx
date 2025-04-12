@@ -14,6 +14,7 @@ import {
     Skeleton,
     CircularProgress,
 } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton'; // Import the LoadingButton component
 import { MFA, Approve } from "../services/api";
 
 const ApproveMovies = () => {
@@ -25,7 +26,7 @@ const ApproveMovies = () => {
         message: "",
         severity: "success",
     });
-
+    const [loadingButton, setLoadingButton] = useState({}); // Track loading states for buttons
     const navigate = useNavigate();
 
     const toggleDescription = (movieId) => {
@@ -56,9 +57,9 @@ const ApproveMovies = () => {
     };
 
     const handleDecision = async (movieId, status) => {
+        setLoadingButton((prev) => ({ ...prev, [movieId]: true })); // Start loading for the movie's buttons
         try {
             const res = await Approve(movieId, status);
-
             setSnackbar({
                 open: true,
                 message: res.data.message || (status === 1 ? "Movie approved" : "Movie rejected"),
@@ -72,6 +73,8 @@ const ApproveMovies = () => {
                 message: err.response?.data?.message || "Operation failed",
                 severity: "error",
             });
+        } finally {
+            setLoadingButton((prev) => ({ ...prev, [movieId]: false })); // Stop loading after the operation
         }
     };
 
@@ -185,20 +188,24 @@ const ApproveMovies = () => {
                                         </Typography>
 
                                         <Box mt={2} display="flex" gap={1}>
-                                            <Button
+                                            <LoadingButton
                                                 variant="contained"
                                                 color="success"
                                                 onClick={() => handleDecision(movie.Mid, 1)}
+                                                loading={loadingButton[movie.Mid] || false} // Show loading spinner
+                                                loadingPosition="start"
                                             >
                                                 Approve
-                                            </Button>
-                                            <Button
+                                            </LoadingButton>
+                                            <LoadingButton
                                                 variant="outlined"
                                                 color="error"
                                                 onClick={() => handleDecision(movie.Mid, -1)}
+                                                loading={loadingButton[movie.Mid] || false} // Show loading spinner
+                                                loadingPosition="start"
                                             >
                                                 Reject
-                                            </Button>
+                                            </LoadingButton>
                                         </Box>
                                     </CardContent>
                                 </Card>

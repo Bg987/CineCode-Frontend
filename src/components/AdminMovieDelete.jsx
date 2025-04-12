@@ -13,14 +13,17 @@ import {
   Skeleton,
   TextField,
   MenuItem,
-  InputAdornment
+  InputAdornment,
+  CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
+import { getMovies, deleteMovies } from '../services/api';
 
 const AdminMovieDelete = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deletingMovieId, setDeletingMovieId] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [nameFilter, setNameFilter] = useState('');
   const [yearFilter, setYearFilter] = useState('');
@@ -34,7 +37,7 @@ const AdminMovieDelete = () => {
   const fetchMovies = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("https://cinecode-backend.onrender.com/apifAndD/getMovies", { withCredentials: true });
+      const res = await getMovies();
       setMovies(res.data);
     } catch (err) {
       console.error("Error fetching movies", err);
@@ -45,16 +48,16 @@ const AdminMovieDelete = () => {
   };
 
   const handleDelete = async (movieId) => {
+    setDeletingMovieId(movieId);
     try {
-      const response = await axios.delete("https://cinecode-backend.onrender.com/apifAndD/deleteMovie", {
-        data: { movieId },
-        withCredentials: true
-      });
+      const response = await deleteMovies(movieId);
       setMovies(prev => prev.filter(movie => movie.Mid !== movieId));
       setSnackbar({ open: true, message: response.data.message, severity: 'success' });
     } catch (err) {
       console.error("Error deleting movie", err);
       setSnackbar({ open: true, message: 'Failed to delete movie', severity: 'error' });
+    } finally {
+      setDeletingMovieId(null);
     }
   };
 
@@ -72,29 +75,22 @@ const AdminMovieDelete = () => {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #1D4350, #A43931)",
+        minHeight: '100vh',
+        background: 'linear-gradient(to right, #1D4350, #A43931)',
         py: 5,
         px: 3,
-        color: "#fff",
+        color: '#fff',
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 2,
-          mb: 3,
-        }}
-      >
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 3 }}>
         <Button
           variant="outlined"
-          onClick={() => navigate("/AHome")}
+          onClick={() => navigate('/AHome')}
           sx={{
-            borderColor: "#ECF0F1",
-            color: "#ECF0F1",
-            fontWeight: "bold",
-            "&:hover": { backgroundColor: "#ECF0F1", color: "#2C3E50" },
+            borderColor: '#ECF0F1',
+            color: '#ECF0F1',
+            fontWeight: 'bold',
+            '&:hover': { backgroundColor: '#ECF0F1', color: '#2C3E50' },
           }}
         >
           Back
@@ -117,12 +113,12 @@ const AdminMovieDelete = () => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "#2C3E50" }} />
+                  <SearchIcon sx={{ color: '#2C3E50' }} />
                 </InputAdornment>
               ),
             }}
             sx={{
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               borderRadius: 2,
             }}
           />
@@ -135,7 +131,7 @@ const AdminMovieDelete = () => {
             fullWidth
             value={yearFilter}
             onChange={(e) => setYearFilter(e.target.value)}
-            sx={{ backgroundColor: "#fff", borderRadius: 2 }}
+            sx={{ backgroundColor: '#fff', borderRadius: 2 }}
           >
             <MenuItem value="">All Years</MenuItem>
             {uniqueYears.map((year) => (
@@ -151,7 +147,7 @@ const AdminMovieDelete = () => {
             fullWidth
             value={languageFilter}
             onChange={(e) => setLanguageFilter(e.target.value)}
-            sx={{ backgroundColor: "#fff", borderRadius: 2 }}
+            sx={{ backgroundColor: '#fff', borderRadius: 2 }}
           >
             <MenuItem value="">All Languages</MenuItem>
             {uniqueLanguages.map((lang) => (
@@ -165,7 +161,7 @@ const AdminMovieDelete = () => {
         {loading
           ? Array.from({ length: 6 }).map((_, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card sx={{ background: "#2C3E50", borderRadius: 3 }}>
+                <Card sx={{ background: '#2C3E50', borderRadius: 3 }}>
                   <Skeleton variant="rectangular" height={300} animation="wave" />
                   <CardContent>
                     <Skeleton variant="text" height={30} />
@@ -177,16 +173,16 @@ const AdminMovieDelete = () => {
             ))
           : filteredMovies.map((movie) => (
               <Grid item xs={12} sm={6} md={4} key={movie.Mid}>
-                <Card sx={{ background: "#2C3E50", color: "#ECF0F1", borderRadius: 3 }}>
+                <Card sx={{ background: '#2C3E50', color: '#ECF0F1', borderRadius: 3 }}>
                   <CardMedia
                     component="img"
-                    image={`http://192.168.121.47:4000/apiSeeM/images/${movie.Mid}.jpg`}
+                    image={`https://res.cloudinary.com/ddlyq5ies/image/upload/v1744478351/CineCode/${movie.Mid}.webp`}
                     alt={movie.Mname}
                     sx={{
-                      width: "100%",
-                      height: "300px",
-                      objectFit: "cover",
-                      backgroundColor: "#1c1c1c",
+                      width: '100%',
+                      height: '300px',
+                      objectFit: 'cover',
+                      backgroundColor: '#1c1c1c',
                     }}
                   />
                   <CardContent>
@@ -195,10 +191,10 @@ const AdminMovieDelete = () => {
                     <Typography variant="body2"><strong>Year:</strong> {movie.Year}</Typography>
                     <Typography variant="body2"><strong>Duration:</strong> {movie.Duration} mins</Typography>
                     <Typography variant="body2" sx={{ mt: 1 }}>
-                      <strong>Type:</strong>{" "}
+                      <strong>Type:</strong>{' '}
                       {Array.isArray(movie.Type)
-                        ? movie.Type.join(", ")
-                        : JSON.parse(movie.Type).join(", ")}
+                        ? movie.Type.join(', ')
+                        : JSON.parse(movie.Type).join(', ')}
                     </Typography>
 
                     <Box mt={2} display="flex" justifyContent="flex-start">
@@ -206,8 +202,14 @@ const AdminMovieDelete = () => {
                         variant="contained"
                         color="error"
                         onClick={() => handleDelete(movie.Mid)}
+                        disabled={deletingMovieId === movie.Mid}
+                        startIcon={
+                          deletingMovieId === movie.Mid ? (
+                            <CircularProgress size={20} color="inherit" />
+                          ) : null
+                        }
                       >
-                        Delete
+                        {deletingMovieId === movie.Mid ? 'Deleting...' : 'Delete'}
                       </Button>
                     </Box>
                   </CardContent>

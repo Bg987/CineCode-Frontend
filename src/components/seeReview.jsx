@@ -89,7 +89,7 @@ const SeeReview = () => {
     
     const renderedCards = useMemo(() => {
         return reviews.map((movie) => {
-            const imageUrl = `http://192.168.121.47:4000/apiSeeM/images/${movie.Mid}.jpg`;
+            const imageUrl = `https://res.cloudinary.com/ddlyq5ies/image/upload/v1744478351/CineCode/${movie.Mid}.webp`;
             return (
                 <Grid item xs={12} key={movie.Mid}>
                     <Card sx={{ background: "#2C3E50", color: "#ECF0F1", borderRadius: 3, p: 2 }}>
@@ -170,7 +170,7 @@ const SeeReview = () => {
                                                 }}
                                             >
                                                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                                                    @{rev.username} — ⭐ {rev.rating}/5
+                                                    @{rev.username==localStorage.getItem("Uname")?"You":rev.username} — ⭐ {rev.rating}/5
                                                 </Typography>
                                                 <Typography variant="body2" sx={{ wordWrap: "break-word" }}>
                                                     {expandedReviews[reviewKey]

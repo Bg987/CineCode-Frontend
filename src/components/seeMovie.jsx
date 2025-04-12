@@ -117,7 +117,7 @@ const SeeMovie = () => {
               objectFit: "cover",
               backgroundColor: "#1c1c1c",
             }}
-            image={`http://192.168.121.47:4000${movie.ImageUrl}`}
+            image={`https://res.cloudinary.com/ddlyq5ies/image/upload/v1744478351/CineCode/${movie.Mid}.webp`}
             alt={movie.Mname}
           />
           <CardContent>

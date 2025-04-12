@@ -5,7 +5,7 @@ import io from "socket.io-client";
 import { logoutAdmin } from "../services/api";
 
 
-const socket = io("https://cinecode-backend.onrender.com/");
+const socket = io("https://cinecode-backend.onrender.com");
 
 const AdminHome = () => {
     const [dashboardData, setDashboardData] = useState({});
@@ -23,10 +23,10 @@ const AdminHome = () => {
         socket.on("dashboard", (data) => {
             setDashboardData(data);
             if (data.LongestMovie?.Mid) {
-                setLurl(`http://192.168.121.47:4000/apiSeeM/images/${data.LongestMovie.Mid}.jpg`);
+                setLurl(`https://res.cloudinary.com/ddlyq5ies/image/upload/v1744478351/CineCode/${data.LongestMovie.Mid}.webp`);
             }
             if (data.SmallestMovie?.Mid) {
-                setSurl(`http://192.168.121.47:4000/apiSeeM/images/${data.SmallestMovie.Mid}.jpg`);
+                setSurl(`https://res.cloudinary.com/ddlyq5ies/image/upload/v1744478351/CineCode/${data.SmallestMovie.Mid}.webp`);
             }
         });
         socket.on("ActiveU", (data) => setActiveU(data));

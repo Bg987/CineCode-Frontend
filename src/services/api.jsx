@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://cinecode-backend.onrender.com", // Backend URL , change in seereview.jsx and seeMoview.jsx approvemoview.jsx adminhome.jsx Adminmoviedelete.jsx
+  baseURL: "https://cinecode-backend.onrender.com", //http://192.168.121.47:4000 Backend URL , change Adminmoviedelete.jsx
   withCredentials: true, 
 });
 
@@ -28,5 +28,7 @@ export const seeMovies = (name, lang, year) =>//filters
 export const AddReview = (id,name,review,rating) => API.post("/apiAddR/AddR", { Mid: id, Mname: name, review: review, rating: rating });
 export const SeeR = () => API.get("/apiSeeR/seeR");
 export const MFA = () => API.get("/ApiApprove/MFApprovence");
-export const Approve = (movieId, status) => API.post("ApiApprove/AOrD",{ movieId, status });
+export const Approve = (movieId, status) => API.post("/ApiApprove/AOrD",{ movieId, status });
+export const getMovies = () => API.get("/apifAndD/getMovies");
+export const deleteMovies = (movieId) => API.delete("/apifAndD/deleteMovie",{data:{ movieId }});
 export default API;

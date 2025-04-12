@@ -41,7 +41,6 @@ const ApproveMovies = () => {
         setLoading(true);
         try {
             const res = await MFA();
-            console.log(res.data)
             setPendingMovies(res.data);
         } catch (err) {
             setSnackbar({
@@ -139,7 +138,7 @@ const ApproveMovies = () => {
                                 >
                                     <CardMedia
                                         component="img"
-                                        image={`http://192.168.121.47:4000/apiSeeM/images/${movie.Mid}.jpg`}
+                                        image={`https://res.cloudinary.com/ddlyq5ies/image/upload/v1744478351/CineCode/${movie.Mid}.webp`}
                                         alt={movie.MovieName}
                                         sx={{
                                             width: "100%",

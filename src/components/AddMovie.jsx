@@ -11,9 +11,10 @@ import {
     CardContent,
     FormControl,
     InputLabel,
+    CircularProgress
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { AddMovieApi } from "../services/api"; 
+import { AddMovieApi } from "../services/api";
 
 const genres = [
     "Action", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary",
@@ -39,18 +40,17 @@ const AddMovie = () => {
 
     const navigate = useNavigate();
     const [movieData, setMovieData] = useState(initialMovieData);
+    const [loading, setLoading] = useState(false); // 👈 Loading state
 
-    // Reset Form
     const handleReset = () => {
         setMovieData(initialMovieData);
+        setLoading(false);
     };
 
-    // Handle Text Input Changes
     const handleChange = (e) => {
         setMovieData({ ...movieData, [e.target.name]: e.target.value });
     };
 
-    // Handle Genre Selection
     const handleCheckboxChange = (e) => {
         const { value, checked } = e.target;
         setMovieData((prev) => ({
@@ -65,12 +65,14 @@ const AddMovie = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         if (!movieData.file) {
             alert("Please upload an image file.");
             return;
         }
-    
+
+        setLoading(true); // 👈 Start loading
+
         const formData = new FormData();
         formData.append("name", movieData.name);
         formData.append("releaseYear", movieData.releaseYear);
@@ -78,30 +80,28 @@ const AddMovie = () => {
         formData.append("type", JSON.stringify(movieData.type));
         formData.append("description", movieData.description);
         formData.append("duration", movieData.duration);
-        formData.append("movieImage", movieData.file); // Ensure correct key
+        formData.append("movieImage", movieData.file);
+
         try {
             const res = await AddMovieApi(formData);
-            console.log("Server Response:", res);
-    
+           
             if (res.status === 201) {
-                alert(res.data.message); // Show success message
-                handleReset(); // Reset the form after success
-            }
-            else {
+                alert(res.data.message);
+                handleReset();
+            } else {
                 alert("Unexpected error occurred. Try again.");
             }
         } catch (error) {
             console.error("Error submitting movie:", error);
-    
-            // Properly handle different types of errors
             if (error.response) {
                 alert(error.response.data.message || "Failed to add movie.");
             } else {
                 alert("Network error. Check your connection.");
             }
+        } finally {
+            setLoading(false); // 👈 Stop loading
         }
     };
-    
 
     return (
         <Box
@@ -135,7 +135,6 @@ const AddMovie = () => {
                 </Button>
             </Box>
 
-            {/* Movie Form Card */}
             <Card
                 sx={{
                     maxWidth: 600,
@@ -268,8 +267,14 @@ const AddMovie = () => {
                             <Button onClick={handleReset} type="reset" variant="outlined">
                                 Reset
                             </Button>
-                            <Button type="submit" variant="contained">
-                                Submit
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                disabled={loading}
+                                startIcon={loading && <CircularProgress size={20} color="inherit" />}
+                            >
+                                {loading ? "Submitting..." : "Submit"}
                             </Button>
                         </Box>
                     </form>

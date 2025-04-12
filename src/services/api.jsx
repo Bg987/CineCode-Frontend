@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://cinecode-backend.onrender.com/", // Backend URL , change in seereview.jsx and seeMoview.jsx approvemoview.jsx adminhome.jsx Adminmoviedelete.jsx
+  baseURL: "https://cinecode-backend.onrender.com", // Backend URL , change in seereview.jsx and seeMoview.jsx approvemoview.jsx adminhome.jsx Adminmoviedelete.jsx
   withCredentials: true, 
 });
 

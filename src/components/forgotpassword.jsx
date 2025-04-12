@@ -13,8 +13,7 @@ const ForgotPassword = () => {
     setMessage("");
     try {
       const response = await forgotPassword({ username });
-      console.log(response);
-      setMessage(response.data.message);
+       setMessage(response.data.message);
     } catch (error) {
       setMessage(error.response?.data.message || "Error sending reset link.");
     } finally {

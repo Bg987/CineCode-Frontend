@@ -29,6 +29,7 @@ const Login = () => {
         navigate(role === "user" ? "/Uhome" : "/AHome");
       }
     } catch (error) {
+      console.log(error);
       setMsg(error.response?.data.message || "Login failed");
     } finally {
       setLoading(false);

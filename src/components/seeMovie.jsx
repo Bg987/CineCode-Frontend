@@ -24,13 +24,13 @@ const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
 
 // ✅ Component for Read More / Show Less
 const ReadMoreText = ({ text = "", maxChars = 200 }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);//initial state
 
   if (!text) return null;
 
   const isLong = text.length > maxChars;
   const displayText = expanded || !isLong ? text : text.substring(0, maxChars) + "...";
-
+//as user click expanded is true or text is not long as maxchars so `: text` exucute ,if bith conditions false than short text is shown `text.substring(0, maxChars)`
   return (
     <Typography
       variant="body2"
@@ -40,7 +40,7 @@ const ReadMoreText = ({ text = "", maxChars = 200 }) => {
       {isLong && (
         <Box
           component="span"
-          onClick={() => setExpanded(!expanded)}
+          onClick={() => setExpanded(!expanded)}//as button click now user wants to see more text so expended set to true
           sx={{
             color: "#00BFFF",
             cursor: "pointer",
@@ -98,7 +98,7 @@ const SeeMovie = () => {
     setFilters(resetFilters);
     fetchMovies(resetFilters);
   };
-
+//use memo becase if only movie data changed it re-render because not re render if filter data changed,button clicket or any other event(for perfomance improvments)
   const renderedMovies = useMemo(() => {
     return movies.map((movie) => (
       <Grid item xs={12} sm={6} md={4} key={movie.Mid}>

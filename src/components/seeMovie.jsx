@@ -10,6 +10,8 @@ import {
   Button,
   CardMedia,
   Skeleton,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { seeMovies } from "../services/api";
@@ -22,15 +24,12 @@ const languages = [
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
 
-// ✅ Component for Read More / Show Less
 const ReadMoreText = ({ text = "", maxChars = 200 }) => {
-  const [expanded, setExpanded] = useState(false);//initial state
-
+  const [expanded, setExpanded] = useState(false);
   if (!text) return null;
-
   const isLong = text.length > maxChars;
   const displayText = expanded || !isLong ? text : text.substring(0, maxChars) + "...";
-//as user click expanded is true or text is not long as maxchars so `: text` exucute ,if bith conditions false than short text is shown `text.substring(0, maxChars)`
+
   return (
     <Typography
       variant="body2"
@@ -40,7 +39,7 @@ const ReadMoreText = ({ text = "", maxChars = 200 }) => {
       {isLong && (
         <Box
           component="span"
-          onClick={() => setExpanded(!expanded)}//as button click now user wants to see more text so expended set to true
+          onClick={() => setExpanded(!expanded)}
           sx={{
             color: "#00BFFF",
             cursor: "pointer",
@@ -59,7 +58,9 @@ const SeeMovie = () => {
   const [filters, setFilters] = useState({ name: "", lang: "", year: "" });
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [byYouOnly, setByYouOnly] = useState(false);
   const navigate = useNavigate();
+
   const fetchMovies = async (customFilters = filters) => {
     setLoading(true);
     try {
@@ -97,12 +98,27 @@ const SeeMovie = () => {
     const resetFilters = { name: "", lang: "", year: "" };
     setFilters(resetFilters);
     fetchMovies(resetFilters);
+    setByYouOnly(false); // Also reset the "By You" filter
   };
-//use memo becase if only movie data changed it re-render because not re render if filter data changed,button clicket or any other event(for perfomance improvments)
+
   const renderedMovies = useMemo(() => {
-    return movies.map((movie) => (
+    const filtered = byYouOnly
+      ? movies.filter((movie) => movie.By === "You")
+      : movies;
+
+    return filtered.map((movie) => (
       <Grid item xs={12} sm={6} md={4} key={movie.Mid}>
-        <Card sx={{ background: "#2C3E50", color: "#ECF0F1", borderRadius: 3 }}>
+        <Card
+          sx={{
+            background: movie.By === "You" ? "linear-gradient(135deg, #2C3E50, #34495E)" : "#2C3E50",
+            color: "#ECF0F1",
+            borderRadius: 3,
+            boxShadow: movie.By === "You" ? "0 4px 20px rgba(41, 128, 185, 0.6)" : "none",
+            transform: movie.By === "You" ? "scale(1.01)" : "none",
+            transition: "all 0.3s ease-in-out",
+            border: movie.By === "You" ? "2px solid #2980B9" : "none",
+          }}
+        >
           <CardMedia
             component="img"
             loading="lazy"
@@ -121,12 +137,13 @@ const SeeMovie = () => {
             alt={movie.Mname}
           />
           <CardContent>
-            <Typography variant="h6" gutterBottom>
-              {movie.Mname}
-            </Typography>
+            <Typography variant="h6" gutterBottom>{movie.Mname}</Typography>
             <Typography variant="body2">Language: {movie.Language}</Typography>
             <Typography variant="body2">Year: {movie.Year}</Typography>
             <Typography variant="body2">Duration: {movie.Duration} min</Typography>
+            <Typography variant="body2" fontWeight="bold">
+              {movie.By === "You" ? "🎬 Your Movie" : movie.By === "Admin" ? "🛡️ By Admin" : "📽️ Listed by someone else"}
+            </Typography>
             <ReadMoreText text={movie.Discription} maxChars={40} />
             <Button
               variant="contained"
@@ -139,7 +156,7 @@ const SeeMovie = () => {
         </Card>
       </Grid>
     ));
-  }, [movies]);
+  }, [movies, byYouOnly]);
 
   return (
     <Box
@@ -154,15 +171,8 @@ const SeeMovie = () => {
         transform: "translateZ(0)",
         WebkitFontSmoothing: "antialiased"
       }}
-    ><Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        gap: 2,
-        mb: 3,
-        paddingX: "10px",
-      }}
     >
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 3 }}>
         <Button
           variant="outlined"
           onClick={() => navigate("/Uhome")}
@@ -176,12 +186,13 @@ const SeeMovie = () => {
           Back
         </Button>
       </Box>
+
       <Typography variant="h4" textAlign="center" fontWeight="bold" mb={3}>
         Explore Movies
       </Typography>
 
       {/* Filters */}
-      <Grid container spacing={2} justifyContent="center" mb={4}>
+      <Grid container spacing={2} justifyContent="center" mb={2}>
         <Grid item xs={12} sm={4}>
           <TextField
             fullWidth
@@ -237,22 +248,37 @@ const SeeMovie = () => {
         </Grid>
       </Grid>
 
+      {/* By You Toggle */}
+      <Box display="flex" justifyContent="center" mb={3}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={byYouOnly}
+              onChange={(e) => setByYouOnly(e.target.checked)}
+              sx={{ color: "#fff" }}
+            />
+          }
+          label="Only show my movies"
+          sx={{ color: "#fff" }}
+        />
+      </Box>
+
       {/* Movie Cards or Skeletons */}
       <Grid container spacing={3}>
         {loading
           ? Array.from({ length: 6 }).map((_, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card sx={{ background: "#2C3E50", borderRadius: 3 }}>
-                <Skeleton variant="rectangular" height={300} animation="wave" />
-                <CardContent>
-                  <Skeleton variant="text" height={30} />
-                  <Skeleton variant="text" width="80%" />
-                  <Skeleton variant="text" width="60%" />
-                  <Skeleton variant="text" width="90%" />
-                </CardContent>
-              </Card>
-            </Grid>
-          ))
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card sx={{ background: "#2C3E50", borderRadius: 3 }}>
+                  <Skeleton variant="rectangular" height={300} animation="wave" />
+                  <CardContent>
+                    <Skeleton variant="text" height={30} />
+                    <Skeleton variant="text" width="80%" />
+                    <Skeleton variant="text" width="60%" />
+                    <Skeleton variant="text" width="90%" />
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
           : renderedMovies}
       </Grid>
     </Box>

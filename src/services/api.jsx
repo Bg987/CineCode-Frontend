@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://192.168.121.47:4000", //https://cinecode-backend.onrender.com Backend URL , change Adminmoviedelete.jsx
+  baseURL: "https://cinecode-backend.onrender.com", //http://192.168.121.47:4000 Backend URL , change Adminmoviedelete.jsx
   withCredentials: true, 
 });
 

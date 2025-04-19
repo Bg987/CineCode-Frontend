@@ -65,7 +65,7 @@ const UserHome = () => {
           </Button>
           <Button
             variant="contained"
-            onClick={() => alert("Feature coming soon!")}
+            onClick={() => navigate("/edit")}
             sx={{
               background: "linear-gradient(45deg, #ffa502, #ff7f50)",
               "&:hover": { background: "linear-gradient(45deg, #ff7f50, #ff4500)" },

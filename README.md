@@ -1,4 +1,4 @@
-# 🎬 CineCode – Frontend
+# 🎬 CineCode
 
 Welcome to **CineCode**, a modern web application for browsing, reviewing, and rating movies. This is the **frontend** repository built with **React**, **Material UI**, and **Vite**. It connects with the CineCode backend to deliver a seamless movie review experience.
 

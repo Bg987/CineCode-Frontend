@@ -8,7 +8,7 @@ Welcome to **CineCode**, a modern web application for browsing, reviewing, and r
 
 - 🔐 **User Authentication** – Secure login/signup system.
 - 🎬 **Movie Browsing** – Search and filter by name, language, and year.
-- ⭐ **Ratings & Reviews** – Users can submit and view reviews also add moviesthan need for approvance.
+- ⭐ **Ratings & Reviews** – Users can submit and view reviews also add movies that need for approvance.
 - 🧑‍💼 **Admin Panel** – Admins can approve or reject movie submissions also delete movie.
 - 💬 **Real-time Dashboard** – Real time data show in admin dashboard like active users , total users , toal movies.
 - 📱 **Responsive Design** – Fully responsive across all devices.

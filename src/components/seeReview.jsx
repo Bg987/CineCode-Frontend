@@ -308,7 +308,7 @@ const SeeReview = () => {
                         <Card sx={{ background: "#2C3E50", color: "#ECF0F1", borderRadius: 3 }}>
                             <CardContent>
                                 <Typography variant="h6" align="center">
-                                    No movies found
+                                    No Reviews found
                                 </Typography>
                             </CardContent>
                         </Card>

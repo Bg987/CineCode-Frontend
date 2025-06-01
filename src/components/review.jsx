@@ -10,6 +10,7 @@ import {
   ToggleButtonGroup,
   Stack,
   Grid,
+  CircularProgress,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AddReview } from "../services/api";
@@ -23,6 +24,7 @@ const ReviewAdd = () => {
   const [messageColor, setMessageColor] = useState("green");
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +39,7 @@ const ReviewAdd = () => {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const response = await AddReview(movie.Mid, movie.Mname, reviewText, rating);
       if (response?.status === 201) {
@@ -52,6 +55,8 @@ const ReviewAdd = () => {
       console.error("Error adding review:", error);
       setServerMessage(error?.response?.data?.message || "Failed to add review.");
       setMessageColor("red");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -196,6 +201,7 @@ const ReviewAdd = () => {
                   type="submit"
                   fullWidth
                   variant="contained"
+                  disabled={isSubmitting}
                   sx={{
                     mt: 2,
                     background: "linear-gradient(135deg, #D32F2F, #B71C1C)",
@@ -207,7 +213,7 @@ const ReviewAdd = () => {
                     "&:hover": { background: "#C62828" },
                   }}
                 >
-                  Submit Review
+                  {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Submit Review"}
                 </Button>
               </Grid>
             </Grid>

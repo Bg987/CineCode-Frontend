@@ -4,7 +4,7 @@ import {  useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import { logoutAdmin } from "../services/api";
 
-const socket = io("http://192.168.111.47:4000");
+const socket = io("https://cinecode-backend.onrender.com");
 
 const AdminHome = () => {
     const [dashboardData, setDashboardData] = useState({});

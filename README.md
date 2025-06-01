@@ -36,4 +36,3 @@ Welcome to **CineCode**, a modern web application for browsing, reviewing, and r
 ![image](https://github.com/user-attachments/assets/8109e43c-1c35-4480-bd59-7980b2700130)
 
 
-## try https://cine-code-frontend.vercel.app/

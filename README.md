@@ -27,3 +27,9 @@ Welcome to **CineCode**, a modern web application for browsing, reviewing, and r
 | Real-time | Socket.IO Client |
 | Build Tool | Vite |
 | Deployment | Vercel |
+
+## 🔍 Some Glimpse of the Project
+
+
+
+## try https://cine-code-frontend.vercel.app/

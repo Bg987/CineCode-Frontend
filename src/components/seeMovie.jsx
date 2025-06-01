@@ -70,7 +70,7 @@ const SeeMovie = () => {
         customFilters.year
       );
       if (response.data.length === 0) {
-        alert("No movies found");
+        //alert("No movies found");
         setMovies([]);
       } else {
         setMovies(response.data);

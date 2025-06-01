@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Box, TextField, Button, Typography, Container, Paper, Radio,
@@ -21,7 +21,6 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setMsg("");
-
     try {
       const response = await login({ ...data, role }); // Send role in request
       if (response.data) {
@@ -63,7 +62,7 @@ const Login = () => {
           <Link to="/Uhome" style={{ textDecoration: "none", color: "#af6b6c", marginTop: "10px", fontWeight: "bold" }}>
             <Typography variant="body2">Forgot Logout in last session!?</Typography>
           </Link>
-         
+
           <Link to="/signup" style={{ textDecoration: "none", color: "#00ffff", marginTop: "10px", fontWeight: "bold" }}>
             <Typography variant="body2">New User? Sign Up</Typography>
           </Link>

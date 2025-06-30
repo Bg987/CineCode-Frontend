@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   TextField,
@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AddReview } from "../services/api";
+import { AddReview, reviewsById } from "../services/api";
 
 const ReviewAdd = () => {
   const { state } = useLocation();
@@ -24,8 +24,33 @@ const ReviewAdd = () => {
   const [messageColor, setMessageColor] = useState("green");
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState("");
+  const [temp, setTemp] = useState(`Share your thoughts about ${movie?.Mname} (${movie?.Year})`);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [existingReviews, setExistingReview] = useState([]); // NEW
 
+  useEffect(() => {
+    if (!movie) {
+      navigate("/SeeMovie");
+      return;
+    }
+    fetchReview();
+  }, []);
+  const fetchReview = async () => {
+    try {
+      const response = await reviewsById(movie.Mid);
+      console.log("Review response:", response);
+      if (response?.status === 200 && response.data) {
+        setExistingReview(response.data);
+      } else {
+        console.error("Failed to fetch review data");
+      }
+    } catch (error) {
+      if(error?.response?.status === 404) {
+         setTemp(`Be First reviewer of ${movie.Mname} (${movie.Year})`);
+      }
+      console.error("Error fetching review data:", error);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!reviewText || !rating) {
@@ -33,6 +58,7 @@ const ReviewAdd = () => {
       setMessageColor("red");
       return;
     }
+
     if (reviewText.split(" ").length > 125) {
       setServerMessage("Review exceeds 125 words limit.");
       setMessageColor("red");
@@ -47,6 +73,7 @@ const ReviewAdd = () => {
         setMessageColor("green");
         setReviewText("");
         setRating("");
+        setExistingReview({ review: reviewText, rating }); // Show new review
       } else {
         setServerMessage(response?.data?.message || "Unexpected response.");
         setMessageColor("red");
@@ -57,6 +84,8 @@ const ReviewAdd = () => {
       setMessageColor("red");
     } finally {
       setIsSubmitting(false);
+      setTemp(`Great ! you give review about ${movie.Mname} (${movie.Year})`);
+      fetchReview(); // Refresh existing reviews
     }
   };
 
@@ -83,7 +112,6 @@ const ReviewAdd = () => {
       }}
     >
       <Container maxWidth="md">
-        {/* Navigation Buttons */}
         <Stack direction="row" justifyContent="center" spacing={2} sx={{ mb: 4 }}>
           <Button
             variant="outlined"
@@ -107,7 +135,6 @@ const ReviewAdd = () => {
           </Button>
         </Stack>
 
-        {/* Movie Title and Subtitle */}
         <Typography
           variant="h3"
           align="center"
@@ -121,10 +148,9 @@ const ReviewAdd = () => {
           align="center"
           sx={{ color: "#ECEFF1", mb: 3, fontWeight: "bold", fontSize: { xs: "1rem", sm: "1.3rem" } }}
         >
-          Share your thoughts about <strong>{movie.Mname}</strong> ({movie.Year})
+          {temp}
         </Typography>
 
-        {/* Review Card */}
         <Paper
           elevation={6}
           sx={{
@@ -136,7 +162,6 @@ const ReviewAdd = () => {
         >
           <form onSubmit={handleSubmit}>
             <Grid container spacing={4}>
-              {/* Review Input */}
               <Grid item xs={12} md={6}>
                 <Typography sx={{ fontWeight: "bold", mb: 1, color: "#B0BEC5" }}>
                   Enter Review (Max 125 words):
@@ -162,7 +187,6 @@ const ReviewAdd = () => {
                 />
               </Grid>
 
-              {/* Rating Selector */}
               <Grid item xs={12} md={6}>
                 <Typography sx={{ fontWeight: "bold", mb: 2, color: "#CFD8DC" }}>
                   Select Rating:
@@ -195,7 +219,6 @@ const ReviewAdd = () => {
                 </ToggleButtonGroup>
               </Grid>
 
-              {/* Submit Button */}
               <Grid item xs={12}>
                 <Button
                   type="submit"
@@ -218,7 +241,6 @@ const ReviewAdd = () => {
               </Grid>
             </Grid>
 
-            {/* Server Message */}
             {serverMessage && (
               <Typography
                 sx={{
@@ -234,6 +256,36 @@ const ReviewAdd = () => {
             )}
           </form>
         </Paper>
+        {existingReviews.length > 0 && (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "#ECEFF1" }}>
+              Existing Reviews:
+            </Typography>
+            {existingReviews.map((rev, index) => (
+              <Paper
+                key={index}
+                elevation={4}
+                sx={{
+                  mb: 2,
+                  p: 2,
+                  borderRadius: 2,
+                  backgroundColor: "#37474F",
+                  color: "#ECEFF1",
+                }}
+              >
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  <strong>Review:</strong> {rev.review}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Rating:</strong>{" "}
+                  {[...Array(Number(rev.rating))].map((_, i) => (
+                    <span key={i}>⭐</span>
+                  ))}
+                </Typography>
+              </Paper>
+            ))}
+          </Box>
+        )}
       </Container>
     </Box>
   );

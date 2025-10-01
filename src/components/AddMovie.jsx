@@ -71,7 +71,7 @@ const AddMovie = () => {
             return;
         }
 
-        setLoading(true); // 👈 Start loading
+        setLoading(true); 
 
         const formData = new FormData();
         formData.append("name", movieData.name);

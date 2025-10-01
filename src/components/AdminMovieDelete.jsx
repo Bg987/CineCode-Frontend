@@ -44,6 +44,7 @@ const AdminMovieDelete = () => {
       setSnackbar({ open: true, message: 'Failed to load movies', severity: 'error' });
     } finally {
       setLoading(false);
+      
     }
   };
 

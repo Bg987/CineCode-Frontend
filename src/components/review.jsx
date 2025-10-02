@@ -38,7 +38,6 @@ const ReviewAdd = () => {
   const fetchReview = async () => {
     try {
       const response = await reviewsById(movie.Mid);
-      console.log("Review response:", response);
       if (response?.status === 200 && response.data) {
         setExistingReview(response.data);
       } else {

@@ -4,10 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 const teamMembers = [
   { name: "Godhaniya Bhavya", email: "220170116016@vgecg.ac.in", phone: "9979710503" },
-  { name: "Pipalva Smit", email: "220170116050@vgecg.ac.in", phone: "987-654-3210" },
-  { name: "Shah Kavan", email: "220170116059@vgecg.ac.in", phone: "555-123-4567" },
-  { name: "Patel Roshni", email: "bob.brow", phone: "666-234-5678" },
-  { name: "Bhuriya Dharini", email: "charlie.white@example.com", phone: "777-345-6789" },
 ];
 
 const AboutUs = () => {

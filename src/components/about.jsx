@@ -14,11 +14,8 @@ const AboutUs = () => {
       <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3, fontSize: { xs: "2rem", md: "3rem" } }}>
         About Us
       </Typography>
-      <Typography variant="h6" sx={{ color: "gray", mb: 2, fontSize: { xs: "1rem", md: "1.25rem" } }}>
-        Meet our dedicated team behind CineCode
-      </Typography>
       <Typography variant="h6" sx={{ color: "gray", mb: 5, fontSize: { xs: "1rem", md: "1.25rem" } }}>
-        Vishwakarma Government Engineering College - Computer Engineering Department
+        Vishwakarma Government Engineering College - Information Technology Department
       </Typography>
       <Grid container spacing={4} justifyContent="center">
         {teamMembers.map((member, index) => (

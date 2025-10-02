@@ -8,7 +8,7 @@ const Signup = () => {
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [otpToken, setOtpToken] = useState(null);
+  const [otpId, setOtpId] = useState(null);
   const [otpDisabled, setOtpDisabled] = useState(true);
   
   const navigate = useNavigate(); // Initialize navigate
@@ -25,7 +25,7 @@ const Signup = () => {
     try {
       const response = await signup(formData);
       if (response.status === 201) {
-        setOtpToken(response.data.otpToken);
+        setOtpId(response.data.otpId);
         setOtpDisabled(false);
         setMessage("✅ OTP sent! Please enter to verify.");
       } else {
@@ -44,7 +44,7 @@ const Signup = () => {
     setMessage("");
 
     try {
-      const response = await verifyOTP({ otp, otpToken });
+      const response = await verifyOTP({ otp,otpId});
 
       if (response.status === 200) {
         setMessage("✅ Registration successful! Redirecting to login...");

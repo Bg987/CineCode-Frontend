@@ -21,7 +21,7 @@ const AboutUs = () => {
         {teamMembers.map((member, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Card
-              sx={{
+              sx={{4444444444444
                 background: "#2C3E50",
                 color: "#ECF0F1",
                 textAlign: "center",

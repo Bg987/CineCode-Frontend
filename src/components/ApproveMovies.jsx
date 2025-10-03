@@ -17,8 +17,7 @@ import { MFA, Approve } from "../services/api";
 const ApproveMovies = () => {
     const [pendingMovies, setPendingMovies] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [expandedCards, setExpandedCards] = use
-    State({});
+    const [expandedCards, setExpandedCards] = useState({});
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",

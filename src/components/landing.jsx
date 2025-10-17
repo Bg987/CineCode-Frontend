@@ -93,7 +93,7 @@ const CineCodeLanding = () => {
           fontWeight: "bold",
         }}
       >
-        ⚙️ Note: Our backend system is hosted on a free instance — it may take a
+        ⚙️ Note: The backend system is hosted on a free instance — it may take a
         few seconds to wake up initially. Thank you for your patience!
       </Alert>
 
